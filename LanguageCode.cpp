@@ -1,9 +1,7 @@
-#include "CalcFunc.h"
-#include "stdio.h"
+#include "LanguageCode.h"
 
-int main()
+void LanguageCode(char* filename)
 {
-    char filename[] = "prog.asm";
     stack stk = {};
     StackCtor(&stk, 10);
     FILE* fp = fopen(filename, "rb");
