@@ -1,14 +1,14 @@
-#include "LanguageCode.h"
+#include "../src_h/ByteCode.h"
 
-void LanguageCode(char* filename)
+int ByteCode(char* filename)
 {
     stack stk = {};
     StackCtor(&stk, 10);
     FILE* fp = fopen(filename, "rb");
     while(true)
     {
-        char* command = GetCommand(fp);
-        if(strncmp(command, "HLT", 3) == 0)
+        int command = GetByte(fp);
+        if(command == HLT)
         {
             fclose(fp);
             StackDtor(&stk);
@@ -19,4 +19,12 @@ void LanguageCode(char* filename)
     fclose(fp);
     StackDtor(&stk);
     return 1;
+}
+
+
+int GetByte(FILE* fp)
+{
+    int command = 0;
+    fscanf(fp, "%d", command);
+    return command;
 }

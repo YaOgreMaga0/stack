@@ -1,5 +1,4 @@
-#include "StackVerify.h"
-#include "Stack.h"
+#include "../src_h/StackFunc.h"
 
 int StackCtor(stack* stk, int size)
 {
