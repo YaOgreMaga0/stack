@@ -4,7 +4,6 @@ void push(stack* stk, FILE* fp)
 {
     stack_type arg = 0;
     fscanf(fp, "%d", &arg);
-    fprintf(stderr, "%d\n", arg);
     StackPush(stk, arg);
 }
 

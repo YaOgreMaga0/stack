@@ -1,9 +1,9 @@
 PUSH 52  ;comment example
 PUSH 1
 PUSH 7
-PUSH 10
-MUL
+PUSH 8
 ADD
+MUL
 SUB
 OUT
 HLT

@@ -6,5 +6,6 @@
 
 int GetCommand(FILE* fp);
 int LanguageCode(char* filename);
+int TurnNameIntoCode(const char* command);
 
 #endif //LANGUAGECODE_H

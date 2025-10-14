@@ -24,9 +24,13 @@ int LanguageCode(char* filename)
 
 int GetCommand(FILE* fp)
 {
-    char* command = (char*)calloc(10, sizeof(char));
+    const char* command = (char*)calloc(10, sizeof(char));
     fscanf(fp, "%s", command);
-    fprintf(stderr, "%s\n", command);
+    return TurnNameIntoCode(command);
+}
+
+int TurnNameIntoCode(const char* command)
+{
     if(strncmp(command, "PUSH", 4) == 0 )
         return PUSH;
     if(strncmp(command, "OUT", 3) == 0 )
