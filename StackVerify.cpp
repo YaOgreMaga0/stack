@@ -1,4 +1,4 @@
-#include "../src_h/StackVerify.h"
+#include "StackVerify.h"
 
 int StackDump(stack* stk, int er, const char* filename, const int linen, const char* funcname)
 {
