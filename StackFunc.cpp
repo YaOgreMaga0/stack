@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #include "StackFunc.h"
+=======
+#include "../src_h/StackFunc.h"
+>>>>>>> 2199c195b762b54787bf46f3bf8f830afc665665
 
 int StackCtor(stack* stk, int size)
 {
