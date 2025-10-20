@@ -1,10 +1,10 @@
 #include "CommandFunc.h"
 
-void push(stack* stk, FILE* fp)
+void push(stack* stk)
 {
-    stack_type arg = 0;
-    fscanf(fp, "%d", &arg);
-    StackPush(stk, arg);
+    int ToPush = 0;
+    scanf("%d", &ToPush);
+    StackPush(stk, ToPush);
 }
 
 void out(stack* stk)
@@ -41,25 +41,45 @@ void div(stack* stk)
     StackPush(stk, value1 / value2);
 }
 
-void CommSwitch(int comm, stack* stk, FILE* fp)
+int CommandSwitch(int command, stack* stk)
 {
-    if(comm == PUSH)
-        push(stk, fp);
-    if(comm == OUT)
-        out(stk);
-    if(comm == ADD)
-        add(stk);
-    if(comm == SUB)
-        sub(stk);
-    if(comm == MUL)
-        mul(stk);
-    if(comm == DIV)
-        div(stk);
+    switch(command)
+    {
+        case PUSH:
+            push(stk);
+            break;
+        case OUT:
+            out(stk);
+            break;
+        case ADD:
+            add(stk);
+            break;
+        case SUB:
+            sub(stk);
+            break;
+        case MUL:
+            mul(stk);
+            break;
+        case DIV:
+            div(stk);
+            break;
+        case HLT:
+            break;
+        default:
+            fprintf(stderr, "unknown command\n");
+            return HLT;
+    }
+    return command;
 }
 
-
-/*
-switch(comm)
-
-
-*/
+int GetCommand()
+{
+    char command[5] = "";
+    scanf("%s", command);
+    for(int i = 0; i < 8; i++)
+    {
+        if(strcmp(command, CommandCodes[i]) == 0)
+            return i;
+    }
+    return -1;
+}

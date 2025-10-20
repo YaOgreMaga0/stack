@@ -3,7 +3,7 @@
 
 #include <string.h>
 #include <stdio.h>
-#include "StackFunc.h"
+#include "Stack.h"
 
 typedef enum
 {
@@ -13,16 +13,18 @@ typedef enum
     SUB = 4,
     MUL = 5,
     DIV = 6,
-    HLT = 7
+    HLT = 0
 }command;
 
-void CommSwitch(int comm, stack* stk, FILE* fp);
-void push(stack*stk, FILE* fp);
+const char* CommandCodes[] = {"HLT", "PUSH", "OUT", "ADD", "SUB", "MUL", "DIV"};
+
+int CommandSwitch(int comm, stack* stk);
+void push(stack* stk);
 void out(stack* stk);
 void add(stack* stk);
 void sub(stack* stk);
 void mul(stack* stk);
 void div(stack* stk);
-
+int GetCommand();
 
 #endif //CALCFUNC_H

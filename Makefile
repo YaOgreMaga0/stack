@@ -1,14 +1,14 @@
-SPU: obj/LanguageCode.o obj/CommandFunc.o obj/StackFunc.o obj/StackVerify.o
-	g++ obj/LanguageCode.o obj/StackFunc.o obj/StackVerify.o obj/CommandFunc.o -o Stack
+SPU: obj/Main.o obj/CommandFunc.o obj/StackFunc.o obj/StackVerify.o
+	@g++ obj/Main.o obj/StackFunc.o obj/StackVerify.o obj/CommandFunc.o -o Stack
 
 obj/StackFunc.o: StackFunc.cpp
-	g++ -c StackFunc.cpp -o obj/StackFunc.o
+	@g++ -c StackFunc.cpp -o obj/StackFunc.o
 
 obj/StackVerify.o: StackVerify.cpp
-	g++ -c StackVerify.cpp -o obj/StackVerify.o
+	@g++ -c StackVerify.cpp -o obj/StackVerify.o
 
 obj/CommandFunc.o: CommandFunc.cpp
-	g++ -c CommandFunc.cpp -o obj/CommandFunc.o
+	@g++ -c CommandFunc.cpp -o obj/CommandFunc.o
 
-obj/LanguageCode.o: LanguageCode.cpp
-	g++ -c LanguageCode.cpp -o obj/LanguageCode.o
+obj/Main.o: Main.cpp
+	@g++ -c Main.cpp -o obj/Main.o

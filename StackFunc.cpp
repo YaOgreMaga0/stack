@@ -1,10 +1,10 @@
-#include "StackFunc.h"
+#include "Stack.h"
 
 int StackCtor(stack* stk, int size)
 {
     if(stk == NULL)
     {
-        ErrorPrint(stk, STACK_POINTER_IS_NULL);
+        fprintf(stderr, "Stack Pointer is NULL");
         return STACK_POINTER_IS_NULL;
     }
     if(size <= 0)
@@ -14,7 +14,7 @@ int StackCtor(stack* stk, int size)
     }
     stk->size = size;
     stk->capacity = 0;
-    stk->data = (int*)calloc(size + 2 * canary_size, sizeof(stack_type)); //размер канарейки при любом типе стека кратен размеру элемента стека, поэтому не занимаюсь лишними проверками деления
+    stk->data = (int*)calloc(size + 2 * canary_size, sizeof(stack_type)) + canary_size;
     #ifdef WITHASH
     stk->hash = GetHash(stk);
     #endif //WITHHASH
@@ -30,6 +30,7 @@ int StackDtor(stack* stk)
         return STACK_POINTER_IS_NULL;
     stk->capacity = -1;
     stk->size = -1;
+    TurnToPoison(stk);
     free(stk->data);
     stk->data = NULL;
     #ifdef WITHHASH
@@ -38,24 +39,22 @@ int StackDtor(stack* stk)
     return 0;
 }
 
-int StackPush(stack* stk, stack_type a)
+int StackPush(stack* stk, stack_type ToPush)
 {
     StackVerify(stk)
     if(stk->capacity < stk->size)
     {
-        *(stk->data + stk->capacity + canary_size) = a;
+        *(stk->data + stk->capacity + canary_size) = ToPush;
         stk->capacity++;
         return 0;
     }
     else
     {
         if(StackRealloc(stk) == STACK_IS_FULL)
-        {
             return STACK_IS_FULL;
-        }
         else
         {
-            *(stk->data + stk->capacity + canary_size) = a;
+            *(stk->data + stk->capacity + canary_size) = ToPush;
             stk->capacity++;
         }
     }
@@ -65,11 +64,16 @@ int StackPush(stack* stk, stack_type a)
 stack_type StackPop(stack* stk)
 {
     StackVerify(stk)
-    stack_type c = *(stk->data + stk->capacity + canary_size - 1);
-    *(stk->data + stk->capacity + canary_size - 1) = 0;
+    stack_type value = *(stk->data + stk->capacity - 1);
+    if(value == poison_value)
+    {
+        fprintf(stderr, "Popped poison value");
+        return POISON_ERROR;
+    }
+    *(stk->data + stk->capacity - 1 ) = poison_value;
     stk->capacity--;
     StackVerify(stk)
-    return c;
+    return value;
 }
 
 #ifdef WITHCANARY
@@ -79,3 +83,38 @@ int MakeCanary(stack* stk)
     *(stk->data + stk->size + 1) = canary_value;
 }
 #endif //WITHCANARY
+
+int StackRealloc(stack* stk)
+{
+    stack_type* new_data = (stack_type*)realloc(stk->data,stk->size * 2 * sizeof(stack_type));
+    if(new_data == NULL)
+    {
+        fprintf(stderr, "new memory allocation error");
+        return STACK_IS_FULL;
+    }
+    stk->size *= 2;
+    stk->data = new_data;
+    #ifdef WITHCANARY
+    MakeCanary(stk);
+    #endif //WITHCANARY
+
+    return 0;
+}
+
+#ifdef WITHHASH
+long long int GetHash(stack* stk)
+{
+    long long int hash = hash_value;
+    for(int i = 0; i < stk->capacity; i++)
+        hash = ((hash << 5) + hash) + stk->data[i];
+    return hash;
+}
+#endif //WITHHASH
+
+int TurnToPoison(stack* stk)
+{
+    for(int i = 0; i < stk->size; i++)
+    {
+        stk->data[i] = poison_value;
+    }
+}
