@@ -7,10 +7,9 @@
 
 int StackDump(stack* stk, int er, const char* filename, const int linen, const char* funcname);
 int StackVerifier(stack* stk, const char* filename, const int linen, const char* funcname);
-int ErrorPrint(stack* stk, int er);
+int ErrorPrint(int er);
 int StackPrint(stack* stk);
 int ErrorPos(const char* filename, const int linen, const char* funcname);
-int StackRealloc(stack* stk);
 #ifdef WITHCANARY
 int CanaryCheck(stack* stk, int* er);
 #endif //WITHCANARY

@@ -14,7 +14,7 @@ int StackCtor(stack* stk, int size)
     }
     stk->size = size;
     stk->capacity = 0;
-    stk->data = (int*)calloc(size + 2 * canary_size, sizeof(stack_type)) + canary_size;
+    stk->data = (int*)calloc((size_t)size + 2 * canary_size, sizeof(stack_type)) + canary_size;
     #ifdef WITHASH
     stk->hash = GetHash(stk);
     #endif //WITHHASH
@@ -59,6 +59,7 @@ int StackPush(stack* stk, stack_type ToPush)
         }
     }
     StackVerify(stk)
+    return 0;
 }
 
 stack_type StackPop(stack* stk)
@@ -86,7 +87,7 @@ int MakeCanary(stack* stk)
 
 int StackRealloc(stack* stk)
 {
-    stack_type* new_data = (stack_type*)realloc(stk->data,stk->size * 2 * sizeof(stack_type));
+    stack_type* new_data = (stack_type*)realloc(stk->data, (size_t)stk->size * 2 * sizeof(stack_type));
     if(new_data == NULL)
     {
         fprintf(stderr, "new memory allocation error");
@@ -117,4 +118,5 @@ int TurnToPoison(stack* stk)
     {
         stk->data[i] = poison_value;
     }
+    return 0;
 }

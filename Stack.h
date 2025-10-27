@@ -13,9 +13,9 @@ const long long int hash_value = 6952;
 
 #ifdef WITHCANARY
 const int canary_value = 52;
-const int canary_size = 1;
+const size_t canary_size = 1;
 #else
-const int canary_size = 0;
+const size_t canary_size = 0;
 #endif //WITHCANARY
 
 typedef struct
@@ -26,7 +26,7 @@ typedef struct
     #ifdef WITHHASH
     long long int hash;
     #endif //WITHHASH
-}stack;
+} stack;
 
 typedef enum
 {
@@ -40,7 +40,7 @@ typedef enum
     END_CANARY_DIED = 32,
     HASH_ERROR = 64,
     POISON_ERROR = 128
-}ErrCode;
+} ErrCode;
 
 #include "StackFunc.h"
 #include "StackVerify.h"
